@@ -1,3 +1,12 @@
+# macOS ugh
 .DS_Store
+
+# Rust
 target
+
+# Python
+venv
+__pycache__
+
+# Puzzle input
 input.txt
