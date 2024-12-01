@@ -10,3 +10,6 @@ __pycache__
 
 # Puzzle input
 input.txt
+
+# Debugging
+*.log
