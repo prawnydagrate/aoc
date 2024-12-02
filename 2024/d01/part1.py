@@ -15,9 +15,6 @@ def getmin(l: list[int]) -> int:
     n = l.pop(minidx)
     return n
 
-tot = 0
-
-for _ in range(len(l1)):
-    tot += abs(getmin(l1) - getmin(l2))
+tot = sum(abs(getmin(l1) - getmin(l2)) for _ in range(len(l1)))
 
 print(tot)
