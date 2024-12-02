@@ -2,7 +2,6 @@
 #include "part1.h"
 #include "part2.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 int error(char *string) {
   perror(string);

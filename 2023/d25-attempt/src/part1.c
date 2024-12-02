@@ -1,6 +1,4 @@
-#include "globals.h"
 #include "parser.h"
-#include "test.h"
 
 unsigned long long part1_solution(char *input) {
   node_space_t node_space = {};

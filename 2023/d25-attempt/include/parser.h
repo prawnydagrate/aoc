@@ -1,7 +1,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "globals.h"
+#include "nodes.h"
 
 void parse(char *input, node_space_t node_space);
 
