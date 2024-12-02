@@ -4,6 +4,9 @@
 # Rust
 target
 
+# C
+build
+
 # Python
 venv
 __pycache__
