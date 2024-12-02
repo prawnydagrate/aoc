@@ -3,15 +3,13 @@
 
 #include <stdio.h>
 
-#define NUMTYPE unsigned short
-
 #define INPUT_FILE "input.txt"
-#define INPUT_SIZE (NUMTYPE)32768
-#define INPUT_LINE_SIZE (NUMTYPE)128
+#define INPUT_SIZE 32768
+#define INPUT_LINE_SIZE 128
 
-#define NODE_SPACE_SIZE (NUMTYPE)17576
+#define NODE_SPACE_SIZE 17576
 #define NODE_NULL NODE_SPACE_SIZE
-#define NODE_MAX_CONNECTIONS (NUMTYPE)8
+#define NODE_MAX_CONNECTIONS 8
 
 typedef struct {
   unsigned short conns[NODE_MAX_CONNECTIONS];
@@ -19,6 +17,6 @@ typedef struct {
 
 typedef node_t node_space_t[NODE_SPACE_SIZE];
 
-void node_space_init(node_space_t *node_space);
+void node_space_init(node_space_t node_space);
 
 #endif

@@ -19,5 +19,5 @@ int main() {
     return error("Error reading input file");
   if (fclose(fp) != 0)
     return error("Error closing input file");
-  printf("%u", part1_solution(buff));
+  printf("%llu", part1_solution(buff));
 }
