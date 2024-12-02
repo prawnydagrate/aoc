@@ -17,8 +17,8 @@ def check(nums: list[int], *, rm=False) -> bool:
     if not safe and not rm:
         for i in range(len(nums)):
             # i'm pretty sure it's supposed to be '[i+1:]', formatter bug ig
-            if safe := check(nums[:i] + nums[i + 1 :], rm=True):
-                break
+            if check(nums[:i] + nums[i + 1 :], rm=True):
+                return True
     return safe
 
 
