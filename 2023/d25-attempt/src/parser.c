@@ -11,7 +11,7 @@ void process_line(char *line, node_space_t node_space) {
     trim(to); // jic
     size_t to_idx = node_get_idx(to);
     for (size_t i = 0; i < NODE_MAX_CONNECTIONS; i++) {
-      if (node_space[from_idx].conns[i] == NODE_NULL) {
+      if (node_space[from_idx].conns[i] == NODE_NULL_IDX) {
         node_space[from_idx].conns[i] = to_idx;
         break;
       }

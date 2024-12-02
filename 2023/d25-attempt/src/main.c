@@ -1,7 +1,9 @@
 #include "globals.h"
 #include "part1.h"
 #include "part2.h"
+#include "test.h"
 #include <stdio.h>
+#include <string.h>
 
 int error(char *string) {
   perror(string);
@@ -9,6 +11,8 @@ int error(char *string) {
 }
 
 int main() {
+  // SOLUTION
+  /*
   char buff[INPUT_SIZE];
   FILE *fp = fopen(INPUT_FILE, "r");
   if (fp == NULL)
@@ -19,4 +23,9 @@ int main() {
   if (fclose(fp) != 0)
     return error("Error closing input file");
   printf("%llu", part1_solution(buff));
+  */
+  // TEST
+  char input[INPUT_SIZE];
+  strncpy(input, TEST_INPUT, INPUT_SIZE);
+  printf("%llu", part1_solution(input));
 }
