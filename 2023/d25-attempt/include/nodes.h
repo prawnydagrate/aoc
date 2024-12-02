@@ -14,9 +14,9 @@ typedef struct Node {
 
 typedef node_t node_space_t[NODE_SPACE_SIZE];
 
-typedef unsigned short node_groups_t[NODE_SPACE_SIZE];
+typedef unsigned char node_group_t[NODE_SPACE_SIZE];
 
-typedef unsigned short node_group_t[NODE_SPACE_SIZE];
+typedef unsigned short node_group_sizes_t[NODE_SPACE_SIZE];
 
 void node_space_init(node_space_t node_space);
 
@@ -26,8 +26,8 @@ void node_get_name(char name[4], size_t node_idx);
 
 void node_space_print(node_space_t node_space);
 
-void node_space_get_groups(node_groups_t node_groups, node_space_t node_space);
+void node_space_get_group_sizes(node_group_sizes_t node_group_sizes, node_space_t node_space);
 
-unsigned short node_groups_len(node_groups_t node_groups);
+unsigned short node_group_sizes_len(node_group_sizes_t node_groups);
 
 #endif

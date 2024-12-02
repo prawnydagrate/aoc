@@ -52,22 +52,15 @@ void node_space_print(node_space_t node_space) {
   }
 }
 
-unsigned short node_groups_len(node_groups_t node_groups) {
+unsigned short node_group_sizes_len(node_group_sizes_t node_group_sizes) {
   unsigned short len = 0;
-  while (len < NODE_SPACE_SIZE && node_groups[len] != 0)
+  while (len < NODE_SPACE_SIZE && node_group_sizes[len] != 0)
     len++;
   return len;
 }
 
-bool node_groups_contains(node_groups_t node_groups, unsigned short node_idx) {
-  for (size_t i = 0; i < NODE_SPACE_SIZE; i++)
-    if (node_groups[i] == node_idx)
-      return true;
-  return false;
-}
-
-void node_groups_push(node_groups_t node_groups, unsigned short node_idx) {
-  node_groups[node_groups_len(node_groups)] = node_idx;
+void node_group_sizes_push(node_group_sizes_t node_group_sizes, unsigned short node_group_size) {
+  node_group_sizes[node_group_sizes_len(node_group_sizes)] = node_group_size;
 }
 
 bool node_is_null(node_t node) {
@@ -81,10 +74,8 @@ bool node_is_null(node_t node) {
 void visit_node(unsigned short node_idx, node_group_t node_group,
                 node_space_t node_space, bool visited_nodes[NODE_SPACE_SIZE]) {
   visited_nodes[node_idx] = true;
-  if (node_is_null(node_space[node_idx]) ||
-      node_groups_contains(node_group, node_idx))
-    return;
-  node_groups_push(node_group, node_idx);
+  if (node_is_null(node_space[node_idx])) return;
+  node_group[node_idx] = 1;
   for (size_t i = 0; i < NODE_MAX_CONNECTIONS; i++) {
     unsigned short conn = node_space[node_idx].conns[i];
     if (conn == NODE_NULL_IDX)
@@ -93,7 +84,15 @@ void visit_node(unsigned short node_idx, node_group_t node_group,
   }
 }
 
-void node_space_get_groups(node_groups_t node_groups, node_space_t node_space) {
+unsigned short node_group_len(node_group_t node_group) {
+  unsigned short len = 0;
+  for (size_t i = 0; i < NODE_SPACE_SIZE; i++) {
+    if (node_group[i] == 1) len++;
+  }
+  return len;
+}
+
+void node_space_get_group_sizes(node_group_sizes_t node_group_sizes, node_space_t node_space) {
   unsigned short cum = 0; // stop. it stands for cumulative.
   bool visited[NODE_SPACE_SIZE] = {false};
   while (cum < NODE_SPACE_SIZE) {
@@ -102,9 +101,8 @@ void node_space_get_groups(node_groups_t node_groups, node_space_t node_space) {
     while (i < NODE_SPACE_SIZE && visited[i] == true)
       i++;
     visit_node(i, group, node_space, visited);
-    unsigned short len = node_groups_len(group);
-    node_groups_push(node_groups, len);
+    unsigned short len = node_group_len(group);
+    node_group_sizes_push(node_group_sizes, len);
     cum += len;
-    cum += 2;
   }
 }
