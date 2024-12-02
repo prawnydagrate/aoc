@@ -20,6 +20,8 @@ typedef unsigned short node_group_sizes_t[NODE_SPACE_SIZE];
 
 void node_space_init(node_space_t node_space);
 
+void node_push_conn(node_t *node, unsigned short conn_node_idx);
+
 size_t node_get_idx(char *name);
 
 void node_get_name(char name[4], size_t node_idx);

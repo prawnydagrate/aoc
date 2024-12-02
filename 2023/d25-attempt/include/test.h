@@ -2,18 +2,19 @@
 #define TEST_H
 
 // thank you vim macros
-const char *TEST_INPUT = "jqt: rhn xhk nvd"
-                         "rsh: frs pzl lsr"
-                         "xhk: hfx"
-                         "cmg: qnr nvd lhk bvb"
-                         "rhn: xhk bvb hfx"
-                         "bvb: xhk hfx"
-                         "pzl: lsr hfx nvd"
-                         "qnr: nvd"
-                         "ntq: jqt hfx bvb xhk"
-                         "nvd: lhk"
-                         "lsr: lhk"
-                         "rzs: qnr cmg lsr rsh"
-                         "frs: qnr lhk lsr";
+const char *TEST_INPUT = \
+"jqt: rhn xhk nvd\n\
+rsh: frs pzl lsr\n\
+xhk: hfx\n\
+cmg: qnr nvd lhk bvb\n\
+rhn: xhk bvb hfx\n\
+bvb: xhk hfx\n\
+pzl: lsr hfx nvd\n\
+qnr: nvd\n\
+ntq: jqt hfx bvb xhk\n\
+nvd: lhk\n\
+lsr: lhk\n\
+rzs: qnr cmg lsr rsh\n\
+frs: qnr lhk lsr\n";
 
 #endif

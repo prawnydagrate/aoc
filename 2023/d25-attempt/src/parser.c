@@ -1,6 +1,7 @@
 #include "nodes.h"
 #include "utils.h"
 #include <string.h>
+#include <stdio.h>
 
 void process_line(char *line, node_space_t node_space) {
   line[3] = 0; // dirty manipulation, now line refers to the 'from' component
@@ -10,12 +11,9 @@ void process_line(char *line, node_space_t node_space) {
   while (to != NULL) {
     trim(to); // jic
     size_t to_idx = node_get_idx(to);
-    for (size_t i = 0; i < NODE_MAX_CONNECTIONS; i++) {
-      if (node_space[from_idx].conns[i] == NODE_NULL_IDX) {
-        node_space[from_idx].conns[i] = to_idx;
-        break;
-      }
-    }
+    // connect in both directions
+    node_push_conn(node_space + from_idx, to_idx);
+    node_push_conn(node_space + to_idx, from_idx);
     to = strtok(NULL, " ");
   }
 }
