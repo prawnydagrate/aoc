@@ -3,9 +3,6 @@ import re
 
 from getinput import getall
 
-mul_re = re.compile(r"mul\(\d+,\d+\)")
-do_re = re.compile(r"do\(\)")
-dont_re = re.compile(r"don't\(\)")
 all_re = re.compile(r"(mul\(\d+,\d+\))|(do\(\))|(don't\(\))")
 
 s = getall()
