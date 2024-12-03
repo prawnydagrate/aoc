@@ -9,7 +9,6 @@ s = getall()
 
 tot = 0
 do = True
-last = None
 
 for kw in all_re.findall(s):
     if kw[1]:
