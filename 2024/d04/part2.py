@@ -1,5 +1,3 @@
-from os import walk
-
 from getinput import getlines
 
 type Direction = tuple[int, int]
@@ -31,26 +29,23 @@ def check_direction(
 
 
 def count_x_occurrences(of: str, lines: list[str]) -> int:
-    occs = 0
-    for l, line in enumerate(lines):
-        for c, char in enumerate(line):
-            if of.startswith(char):
-                if check_direction(
-                    X_DIRECTIONS[0], of, lines, l, c
-                ):
-                    if check_direction(X_DIRECTIONS[1], of, lines, l, c + 2):
-                        occs += 1
-                    if check_direction(X_DIRECTIONS[1], of[::-1], lines, l, c + 2):
-                        occs += 1
-            elif of.endswith(char):
-                if check_direction(
-                    X_DIRECTIONS[0], of[::-1], lines, l, c
-                ):
-                    if check_direction(X_DIRECTIONS[1], of, lines, l, c + 2):
-                        occs += 1
-                    if check_direction(X_DIRECTIONS[1], of[::-1], lines, l, c + 2):
-                        occs += 1
-    return occs
+    return sum(
+        (
+            (
+                check_direction(X_DIRECTIONS[1], of, lines, l, c + 2)
+                + check_direction(X_DIRECTIONS[1], of[::-1], lines, l, c + 2)
+            )
+            if (
+                of.startswith(char)
+                and check_direction(X_DIRECTIONS[0], of, lines, l, c)
+                or of.endswith(char)
+                and check_direction(X_DIRECTIONS[0], of[::-1], lines, l, c)
+            )
+            else 0
+        )
+        for l, line in enumerate(lines)
+        for c, char in enumerate(line)
+    )
 
 
 inp_lines = list(getlines())

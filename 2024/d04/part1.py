@@ -35,13 +35,13 @@ def check_direction(
 
 
 def count_occurrences(of: str, lines: list[str]) -> int:
-    occs = 0
-    for l, line in enumerate(lines):
-        for c, char in enumerate(line):
-            if of.startswith(char):
-                for direction in DIRECTIONS:
-                    occs += check_direction(direction, of, lines, l, c)
-    return occs
+    return sum(
+        check_direction(direction, of, lines, l, c)
+        for l, line in enumerate(lines)
+        for c, char in enumerate(line)
+        if of.startswith(char)
+        for direction in DIRECTIONS
+    )
 
 
 inp_lines = list(getlines())
