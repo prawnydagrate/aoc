@@ -39,6 +39,13 @@ fn get_update_relrules<'a>(
 
 fn is_correct(update: &[usize], relevant_rules: &[(usize, usize)]) -> bool {
     for (left, right) in relevant_rules {
+        /* if let Some(lidx) = update.iter().position(|m| m == l) {
+            if let Some(ridx) = update.iter().position(|m| m == r) {
+                if lidx >= ridx {
+                    return false;
+                }
+            }
+        } */
         let lpos = update.iter().position(|m| m == left);
         let rpos = update.iter().position(|m| m == right);
         if let Some(l) = lpos {
@@ -62,28 +69,58 @@ fn is_correct(update: &[usize], relevant_rules: &[(usize, usize)]) -> bool {
     true
 }
 
+fn build_with_rules(built: &mut Vec<usize>, nums: &[usize], rr: &[(usize, usize)]) -> bool {
+    if nums.is_empty() && is_correct(built, rr) {
+        return true;
+    }
+    if built.is_empty() {
+        for _ in 0..nums.len() {
+            built.push(0);
+        }
+    }
+    for &num in nums.iter() {
+        for i in 0..nums.len() {
+            if built[i] != 0 {
+                continue;
+            }
+            built[i] = num;
+            if !is_correct(built, rr) {
+                built[i] = 0;
+                continue;
+            }
+            if build_with_rules(
+                built,
+                &nums
+                    .iter()
+                    .filter_map(|&m| if m == num { None } else { Some(m) })
+                    .collect::<Vec<_>>(),
+                rr,
+            ) {
+                return true;
+            }
+            built[i] = 0;
+            continue;
+        }
+    }
+    false
+}
+
 pub fn solve(input: &str) -> usize {
     let (rules, updates) = parse(input);
     updates
         .into_iter()
-        .map(|mut update| {
+        .map(|update| {
             let rr = get_update_relrules(&rules, &update)
                 .map(<_>::clone)
                 .collect::<Vec<_>>();
             if is_correct(&update, &rr) {
                 return 0;
             }
-            println!("WORKING {update:?}");
-            while !is_correct(&update, &rr) {
-                for ij in (0..update.len()).collect::<Vec<_>>().windows(2) {
-                    let (i, j) = (ij[0], ij[1]);
-                    let (a, b) = (update[i], update[j]);
-                    if rr.iter().find(|(x, y)| x == &b && y == &a).is_some() {
-                        (update[i], update[j]) = (b, a);
-                    }
-                }
-            }
-            update[update.len() / 2]
+            println!("\nWORKING {update:?}");
+            println!("RULES: {rr:?}");
+            let mut rebuilt = Vec::new();
+            build_with_rules(&mut rebuilt, &update, &rr);
+            rebuilt[rebuilt.len() / 2]
         })
         .sum()
 }
