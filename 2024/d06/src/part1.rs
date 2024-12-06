@@ -108,6 +108,7 @@ fn parse(input: &str) -> Map {
         linelen,
     }
 }
+
 pub fn solve(input: &str) -> usize {
     let mut map = parse(input);
     while !map.advance() {}
