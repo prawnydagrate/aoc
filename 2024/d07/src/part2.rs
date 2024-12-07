@@ -1,3 +1,5 @@
+use std::time::{Duration, Instant};
+
 fn parse(input: &str) -> Vec<(isize, Vec<isize>)> {
     input
         .lines()
@@ -45,17 +47,21 @@ fn nways(target: isize, nums: &[isize]) -> usize {
     })
 }
 
-pub fn solve(input: &str) -> usize {
+pub fn solve(input: &str) -> (usize, Duration) {
     let eqs = parse(input);
-    eqs.into_iter()
-        .map(|eq| {
-            let (target, nums) = eq;
-            let nways = nways(target, &nums);
-            if nways > 0 {
-                target as usize
-            } else {
-                0
-            }
-        })
-        .sum()
+    let start = Instant::now();
+    (
+        eqs.into_iter()
+            .map(|eq| {
+                let (target, nums) = eq;
+                let nways = nways(target, &nums);
+                if nways > 0 {
+                    target as usize
+                } else {
+                    0
+                }
+            })
+            .sum(),
+        Instant::now().duration_since(start),
+    )
 }

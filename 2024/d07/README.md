@@ -10,7 +10,7 @@ Got through part 1 with a solution that I'm proud of. But now part 2 is crazy. I
 
 ### Thought process
 
-Well, it's obvious (from the division and subtraction) in the algorithm from part 1, that I'm gonna have to find the _inverse_ of the concatenation operator. For that I'll have to investigate.
+Well, it's obvious (from the division and subtraction in the algorithm from part 1), that I'm gonna have to find the _inverse_ of the concatenation operator. For that I'll have to investigate.
 
 ```
 78 || 56 = 7856
