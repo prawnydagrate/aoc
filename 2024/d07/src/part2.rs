@@ -1,21 +1,18 @@
 use std::time::{Duration, Instant};
 
-fn parse(input: &str) -> Vec<(isize, Vec<isize>)> {
-    input
-        .lines()
-        .map(|line| {
-            let mut split = line.trim().split(": ");
-            (
-                split.next().unwrap().parse().unwrap(),
-                split
-                    .next()
-                    .unwrap()
-                    .split(' ')
-                    .map(|n| n.trim().parse().unwrap())
-                    .collect(),
-            )
-        })
-        .collect()
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = (isize, Vec<isize>)> + use<'a> {
+    input.lines().map(|line| {
+        let mut split = line.trim().split(": ");
+        (
+            split.next().unwrap().parse().unwrap(),
+            split
+                .next()
+                .unwrap()
+                .split(' ')
+                .map(|n| n.trim().parse().unwrap())
+                .collect(),
+        )
+    })
 }
 
 fn nways(target: isize, nums: &[isize]) -> usize {
@@ -48,10 +45,9 @@ fn nways(target: isize, nums: &[isize]) -> usize {
 }
 
 pub fn solve(input: &str) -> (usize, Duration) {
-    let eqs = parse(input);
     let start = Instant::now();
     (
-        eqs.into_iter()
+        parse(input)
             .map(|eq| {
                 let (target, nums) = eq;
                 let nways = nways(target, &nums);
@@ -64,4 +60,19 @@ pub fn solve(input: &str) -> (usize, Duration) {
             .sum(),
         Instant::now().duration_since(start),
     )
+}
+
+// for ferris-elf
+pub fn run(input: &str) -> usize {
+    parse(input)
+        .map(|eq| {
+            let (target, nums) = eq;
+            let nways = nways(target, &nums);
+            if nways > 0 {
+                target as usize
+            } else {
+                0
+            }
+        })
+        .sum()
 }
