@@ -1,6 +1,6 @@
 use std::time::{Duration, Instant};
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item = (isize, Vec<isize>)> + use<'a> {
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = (usize, Vec<usize>)> + use<'a> {
     input.lines().map(|line| {
         let mut split = line.trim().split(": ");
         (
@@ -15,22 +15,21 @@ fn parse<'a>(input: &'a str) -> impl Iterator<Item = (isize, Vec<isize>)> + use<
     })
 }
 
-fn nways(target: isize, nums: &[isize]) -> usize {
+fn nways(target: usize, nums: &[usize]) -> usize {
     let len = nums.len();
     if len == 1 {
         return if nums[0] == target { 1 } else { 0 };
     }
     let last_idx = len - 1;
     let last = nums[last_idx];
-    let sub = target - last;
-    (if sub < 0 {
+    (if last > target {
         0
     } else {
-        nways(sub, &nums[..last_idx])
+        nways(target - last, &nums[..last_idx]) // addition
     } + if target % last != 0 {
         0
     } else {
-        nways(target / last, &nums[..last_idx])
+        nways(target / last, &nums[..last_idx]) // multiplication
     })
 }
 

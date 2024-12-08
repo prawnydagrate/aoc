@@ -1,6 +1,6 @@
 use std::time::{Duration, Instant};
 
-fn parse<'a>(input: &'a str) -> impl Iterator<Item = (isize, Vec<isize>)> + use<'a> {
+fn parse<'a>(input: &'a str) -> impl Iterator<Item = (usize, Vec<usize>)> + use<'a> {
     input.lines().map(|line| {
         let mut split = line.trim().split(": ");
         (
@@ -15,32 +15,36 @@ fn parse<'a>(input: &'a str) -> impl Iterator<Item = (isize, Vec<isize>)> + use<
     })
 }
 
-fn nways(target: isize, nums: &[isize]) -> usize {
+fn nways(target: usize, nums: &[usize]) -> usize {
     let len = nums.len();
     if len == 1 {
         return if nums[0] == target { 1 } else { 0 };
     }
     let last_idx = len - 1;
     let last = nums[last_idx];
-    let sub = target - last;
-    let mut loglast = (last as f64).log10();
-    if loglast % 1. == 0. {
-        loglast += 1.;
-    }
-    let tenpw = 10_usize.pow(loglast.ceil() as u32) as isize;
-    let sublast = target - last;
-    (if sub < 0 {
+    let loglast = (last as f64).log10();
+    let tenpw = 10_usize.pow(if loglast % 1. == 0. {
+        loglast + 1.
+    } else {
+        loglast.ceil()
+    } as u32) as usize;
+    (if last > target {
         0
     } else {
-        nways(sub, &nums[..last_idx]) // addition
+        nways(target - last, &nums[..last_idx]) // addition
     } + if target % last != 0 {
         0
     } else {
         nways(target / last, &nums[..last_idx]) // multiplication
-    } + if sublast < 0 || sublast % tenpw != 0 {
+    } + if last > target {
         0
     } else {
-        nways(sublast / tenpw, &nums[..last_idx]) // concatenation
+        let sublast = target - last;
+        if sublast % tenpw != 0 {
+            0
+        } else {
+            nways(sublast / tenpw, &nums[..last_idx]) // concatenation
+        }
     })
 }
 
