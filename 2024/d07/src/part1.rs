@@ -15,22 +15,20 @@ fn parse<'a>(input: &'a str) -> impl Iterator<Item = (usize, Vec<usize>)> + use<
     })
 }
 
-fn nways(target: usize, nums: &[usize]) -> usize {
+fn works(target: usize, nums: &[usize]) -> bool {
     let len = nums.len();
     if len == 1 {
-        return if nums[0] == target { 1 } else { 0 };
+        return nums[0] == target;
     }
     let last_idx = len - 1;
     let last = nums[last_idx];
-    (if last > target {
-        0
-    } else {
-        nways(target - last, &nums[..last_idx]) // addition
-    } + if target % last != 0 {
-        0
-    } else {
-        nways(target / last, &nums[..last_idx]) // multiplication
-    })
+    if target % last == 0 && works(target / last, &nums[..last_idx]) {
+        return true; // multiplication
+    }
+    if last <= target && works(target - last, &nums[..last_idx]) {
+        return true; // addition
+    }
+    false
 }
 
 pub fn solve(input: &str) -> (usize, Duration) {
@@ -39,9 +37,8 @@ pub fn solve(input: &str) -> (usize, Duration) {
         parse(input)
             .map(|eq| {
                 let (target, nums) = eq;
-                let nways = nways(target, &nums);
-                if nways > 0 {
-                    target as usize
+                if works(target, &nums) {
+                    target
                 } else {
                     0
                 }
@@ -56,9 +53,8 @@ pub fn run(input: &str) -> usize {
     parse(input)
         .map(|eq| {
             let (target, nums) = eq;
-            let nways = nways(target, &nums);
-            if nways > 0 {
-                target as usize
+            if works(target, &nums) {
+                target
             } else {
                 0
             }

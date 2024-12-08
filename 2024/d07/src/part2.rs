@@ -15,37 +15,32 @@ fn parse<'a>(input: &'a str) -> impl Iterator<Item = (usize, Vec<usize>)> + use<
     })
 }
 
-fn nways(target: usize, nums: &[usize]) -> usize {
+fn works(target: usize, nums: &[usize]) -> bool {
     let len = nums.len();
     if len == 1 {
-        return if nums[0] == target { 1 } else { 0 };
+        return nums[0] == target;
     }
     let last_idx = len - 1;
     let last = nums[last_idx];
-    let loglast = (last as f64).log10();
-    let tenpw = 10_usize.pow(if loglast % 1. == 0. {
-        loglast + 1.
-    } else {
-        loglast.ceil()
-    } as u32) as usize;
-    (if last > target {
-        0
-    } else {
-        nways(target - last, &nums[..last_idx]) // addition
-    } + if target % last != 0 {
-        0
-    } else {
-        nways(target / last, &nums[..last_idx]) // multiplication
-    } + if last > target {
-        0
-    } else {
-        let sublast = target - last;
-        if sublast % tenpw != 0 {
-            0
-        } else {
-            nways(sublast / tenpw, &nums[..last_idx]) // concatenation
+    if target % last == 0 && works(target / last, &nums[..last_idx]) {
+        return true; // multiplication
+    }
+    if last <= target {
+        if works(target - last, &nums[..last_idx]) {
+            return true; // addition
         }
-    })
+        let loglast = (last as f64).log10();
+        let tenpw = 10_usize.pow(if loglast % 1. == 0. {
+            loglast + 1.
+        } else {
+            loglast.ceil()
+        } as u32);
+        let sublast = target - last;
+        if sublast % tenpw == 0 && works(sublast / tenpw, &nums[..last_idx]) {
+            return true; // concatenation
+        }
+    }
+    false
 }
 
 pub fn solve(input: &str) -> (usize, Duration) {
@@ -54,9 +49,8 @@ pub fn solve(input: &str) -> (usize, Duration) {
         parse(input)
             .map(|eq| {
                 let (target, nums) = eq;
-                let nways = nways(target, &nums);
-                if nways > 0 {
-                    target as usize
+                if works(target, &nums) {
+                    target
                 } else {
                     0
                 }
@@ -71,9 +65,8 @@ pub fn run(input: &str) -> usize {
     parse(input)
         .map(|eq| {
             let (target, nums) = eq;
-            let nways = nways(target, &nums);
-            if nways > 0 {
-                target as usize
+            if works(target, &nums) {
+                target
             } else {
                 0
             }
